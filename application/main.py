@@ -46,7 +46,7 @@ def main():
                     continue
 
                 #either streamlit_app or st
-                st.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
+                streamlit_app.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
                 ethernet.send_tad_data(s)
 
 # Function for Streamlit-only operation
@@ -70,8 +70,8 @@ def run_streamlit_only():
             "APIndStat": 0,
             "TrafficLightState": 1,
             "IntersectAct": 2,
-            "DMSCtrlSw": 3
-            
+            "DMSCtrlSw": 3,
+            "BusVoltage": 325.2
         }
         
         # Update Streamlit display with new data

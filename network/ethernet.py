@@ -25,7 +25,7 @@ def connect_socket(s: socket):
 def get_tad_data(s: socket):
     data, addr = s.recvfrom(PACKET_SIZE)
     values = struct.unpack('<BBBBBdBdddBBBBBdBBBBd', data)
-                            #1234567890123456789212
+                            #012345678901234567891
 
     tad_data["PSS"]         = values[0]
     tad_data["HVSS"]        = values[1]
@@ -44,13 +44,12 @@ def get_tad_data(s: socket):
     tad_data["TrafficLightState"]   = values[12]
     tad_data["IntersectAct"]        = values[13]
     tad_data["DMSCtrlSw"]          = values[14]
-    tad_data["ctrlswBool"]         = values[15]
-    tad_data["BusVoltage"]          = values[16]
-    tad_data["startup"]          = values[17]
-    tad_data["EDUCtrl"]          = values[18]
-    tad_data["TACstat"]          = values[19]
-    tad_data["MCUcurrmode"]          = values[20]
-    tad_data["MCUtorque"]          = values[21]
+    tad_data["BusVoltage"]          = values[15]
+    tad_data["startup"]          = values[16]
+    tad_data["EDUCtrl"]          = values[17]
+    tad_data["TACstat"]          = values[18]
+    tad_data["MCUcurrmode"]          = values[19]
+    tad_data["MCUtorque"]          = values[20]
 
 
 def send_tad_data(s: socket):

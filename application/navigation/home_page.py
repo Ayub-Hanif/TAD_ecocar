@@ -18,7 +18,7 @@ def display_main_content():
 
     st.header("PCM Data")
     c2 = st.container()
-    b1, b2, b3, b4, b5, b6 = c2.columns(6)
+    b1, b2, b3, b4, b5, b6, b7 = c2.columns(7)
     pcm_metrics = {
         "pcm1": b1.metric("Inst. Power Flow", 0.0),
         "pcm2": b2.metric("Wheel Power Flow", map_WheelPF(0)),
@@ -26,6 +26,7 @@ def display_main_content():
         "pcm4": b4.metric("HV Battery Avg. Cell Temp.", 0.0),
         "pcm5": b5.metric("Motor Temp.", 0.0),
         "pcm6": b6.metric("Drive Mode", map_DrvMode[0]),
+        "pcm7": b7.metric("Bus Voltage", 0.0),
     }
 
     st.header("CAV Data")

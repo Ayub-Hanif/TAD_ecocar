@@ -78,6 +78,21 @@ map_DMSCtrlSw = defaultdict(lambda : "Error")
 map_DMSCtrlSw[0] = "Off"
 map_DMSCtrlSw[1] = "On"
 
+
+map_MCUcurrmode = defaultdict(lambda : "Error")
+map_MCUcurrmode[0] = "Initilaization"
+map_MCUcurrmode[1] = "LV Ready"
+map_MCUcurrmode[2] = "Standby - ASC"
+map_MCUcurrmode[3] = "Reserved"
+map_MCUcurrmode[4] = "Torque Mode"
+map_MCUcurrmode[5] = "Speed Control"
+map_MCUcurrmode[6] = "Reserved"
+map_MCUcurrmode[7] = "Internal Inverter Error"
+map_MCUcurrmode[8] = "Reserved"
+map_MCUcurrmode[9] = "Service Job"
+# All the other ones are suppose to be explain!!!!
+# Values from A to F ?????
+
 #----------------------------------------------
 
 def getIndicatorPanelValues():
@@ -86,7 +101,8 @@ def getIndicatorPanelValues():
         tad_data["HVSS"], 
         tad_data["CAVLongCS"], 
         tad_data["CAVLatCS"], 
-        tad_data["CAVV2XS"]
+        tad_data["CAVV2XS"],
+        tad_data["BusVoltage"],
     ]
 
 def updateSwitchData(switch_val):

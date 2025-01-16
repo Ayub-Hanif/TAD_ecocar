@@ -99,11 +99,6 @@ def create_app():
                 with col2.container(border=True):
                     st.write("READY")
 
-                
-
-
-
-    
         with right_column:
             # Placeholder for content that will be dynamically cleared on page change
             content_placeholder = st.empty()
@@ -161,11 +156,14 @@ def update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics):
         pcm_metrics["pcm4"].metric("HV Battery Avg. Cell Temp.", '%.3f' % (tad_data["RESSBattAvgCellTemp"]))
         pcm_metrics["pcm5"].metric("Motor Temp.", '%.3f' % (tad_data["EDUDriveTemp"]))
         pcm_metrics["pcm6"].metric("Drive Mode", map_DrvMode[tad_data["DrvMode"]])
+                #idk if its a cav or pcm metric??????
+        pcm_metrics["pcm7"].metric("Bus Voltage", '%.3f' % (tad_data["BusVoltage"]))
 
     if cav_metrics:
         cav_metrics["cav1"].metric("APIndStat", map_APIndStat[tad_data["APIndStat"]])
         cav_metrics["cav2"].metric("TrafficLightState", map_TrafficLightState[tad_data["TrafficLightState"]])
         cav_metrics["cav3"].metric("IntersectAct", map_IntersectAct[tad_data["IntersectAct"]])
         cav_metrics["cav4"].metric("DMCSCtrlSw", map_DMSCtrlSw[tad_data["DMSCtrlSw"]])
+
 
     return indicators, pcm_metrics, cav_metrics
