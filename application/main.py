@@ -59,9 +59,9 @@ def run_streamlit_only():
             "PSS": 1,
             "HVSS": 2,
             "CAVLongCS": 0,
-            "CAVLatCS": 1,
-            "CAVV2XS": 2,
-            "InstPF": 3.141,
+            "CAVLatCS": 1, #no TAD Visualization
+            "CAVV2XS": 2, #no TAD Visualization
+            "InstPF": 3.141, 
             "WheelPF": 1,
             "RESSBattSOC": 75.0,
             "RESSBattAvgCellTemp": 32.5,
@@ -71,6 +71,7 @@ def run_streamlit_only():
             "TrafficLightState": 1,
             "IntersectAct": 2,
             "DMSCtrlSw": 3
+            
         }
         
         # Update Streamlit display with new data

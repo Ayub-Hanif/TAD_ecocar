@@ -20,6 +20,15 @@ tad_data = {
     "IntersectAct":         0,
     "DMSCtrlSw":            0,
 
+    # New fields from Speedgoat (v.4)
+    "ctrlswBool":           0,
+    "BusVoltage":           0.0,
+    "startup":              0,
+    "EDUCtrl":              0,
+    "TACstat":              0,
+    "MCUcurrmode":          0,
+    "MCUtorque":            0.0,
+
     # Outputs to Speedgoat
     "Regen":        0,
     "LongCtrl":     0,
@@ -87,4 +96,5 @@ def updateSwitchData(switch_val):
     tad_data["V2X"]         = switch_val[3]
 
 def updateButtonData(button_name):
+    # Toggle the boolean (True/False) for button press
     tad_data[button_name] = not tad_data[button_name]
