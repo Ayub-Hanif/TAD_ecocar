@@ -46,11 +46,11 @@ def create_app():
         with st.container(border=True):
             col1, col2, col3, col4 = st.columns(spec= 4, border=False, gap="small", vertical_alignment="center")
             with col1:
-                st.image("car_warning.png")
-                
+                #st.image("car_warning.png")
+                pass
             with col2:
-                st.image("warning.png")
-
+                #st.image("warning.png")
+                pass
             with col3.container(border=True):
                 st.write("HANDS ON WHEEL")
 
