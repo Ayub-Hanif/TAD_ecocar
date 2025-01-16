@@ -1,0 +1,90 @@
+from collections import defaultdict
+
+#----------------------------------------------
+
+tad_data = {
+    # Inputs from Speedgoat
+    "PSS":                  0,
+    "HVSS":                 0,
+    "CAVLongCS":            0,
+    "CAVLatCS":             0,
+    "CAVV2XS":              0,
+    "InstPF":               0.0,
+    "WheelPF":              0,
+    "RESSBattSOC":          0.0,
+    "RESSBattAvgCellTemp":  0.0,
+    "EDUDriveTemp":         0.0,
+    "DrvMode":              0,
+    "APIndStat":            0,
+    "TrafficLightState":    0,
+    "IntersectAct":         0,
+    "DMSCtrlSw":            0,
+
+    # Outputs to Speedgoat
+    "Regen":        0,
+    "LongCtrl":     0,
+    "LatCtrl":      0,
+    "V2X":          0,
+    "APActivate":   0,
+    "APStart":      0,
+    "APCancel":     0,
+    "APFinish":     0
+}
+
+def map_WheelPF(packed):
+    wheels = ["FL", "FR", "RL", "RR"]
+    out_str = ""
+    for i in range(0, 4):
+        if packed % 2 == 1: out_str = wheels[3-i] + " " + out_str
+        else: out_str = "-- " + out_str
+        packed /= 2
+    return out_str[:-1]
+
+map_DrvMode = defaultdict(lambda : "Error")
+map_DrvMode[0] = "Normal"
+map_DrvMode[1] = "One-Pedal"
+map_DrvMode[2] = "Performance"
+map_DrvMode[3] = "Regen Paddle"
+
+map_APIndStat = defaultdict(lambda : "Error")
+map_APIndStat[0] = "Searching"
+map_APIndStat[1] = "Error"
+map_APIndStat[2] = "Ready"
+map_APIndStat[3] = "In-Progress"
+map_APIndStat[4] = "Complete"
+
+map_TrafficLightState = defaultdict(lambda : "Error")
+map_TrafficLightState[0] = "None Detected"
+map_TrafficLightState[1] = "Red Next"
+map_TrafficLightState[2] = "Yellow Next"
+map_TrafficLightState[3] = "Green Next"
+
+map_IntersectAct = defaultdict(lambda : "Error")
+map_IntersectAct[0] = "Straight"
+map_IntersectAct[1] = "Stop"
+map_IntersectAct[2] = "Left"
+map_IntersectAct[2] = "Right"
+
+map_DMSCtrlSw = defaultdict(lambda : "Error")
+map_DMSCtrlSw[0] = "Off"
+map_DMSCtrlSw[1] = "On"
+
+#----------------------------------------------
+
+def getIndicatorPanelValues():
+    return [
+        tad_data["PSS"], 
+        tad_data["HVSS"], 
+        tad_data["CAVLongCS"], 
+        tad_data["CAVLatCS"], 
+        tad_data["CAVV2XS"]
+    ]
+
+def updateSwitchData(switch_val):
+    tad_data["Regen"]       = switch_val[0]
+    tad_data["LongCtrl"]    = switch_val[1]
+    tad_data["LatCtrl"]     = switch_val[2]
+    tad_data["V2X"]         = switch_val[3]
+
+def updateButtonData(button_name):
+    tad_data[button_name] = not tad_data[button_name]
