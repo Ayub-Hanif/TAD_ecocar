@@ -29,6 +29,29 @@ tad_data = {
     "MCUcurrmode":          0,
     "MCUtorque":            0.0,
 
+    # New fields from Speedgoat (v.5)
+    "MILReq":               0,
+    "MILARC":               0,
+    "FCM":                  0,
+    "LRR":                  0,
+    "SRR_FR":               0,
+    "SRR_LF":               0,
+    "CAV_EBCM":             0,
+    "CAV_EPS":              0,
+    "CAV_PSC":              0,
+    "CAV_Cohda":            0,
+    "CSC_ADAS":             0,
+    "C-ACC_Mileage":               0,
+    "C-ACC_System":            0,
+    "Lead_Distance":        0.0,
+    "Lead_count":           0,
+    "UDP_data":             0,
+    "Dyno_Mode":            0,
+    "Object_Injection":     0,
+    "Lead_Headway":         0.0,
+
+
+
     # Outputs to Speedgoat
     "Regen":        0,
     "LongCtrl":     0,

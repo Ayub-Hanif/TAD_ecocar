@@ -89,9 +89,8 @@ def create_app():
         with left_column:
             with st.container(border=True):
                 st.write("CACC")
-                st.write("MILEAGE")
                 with st.container(border=True):
-                    st.write("25.3 mi")
+                    st.metric("MILEAGE", tad_data["C-ACC_Mileage"])
 
             
             with st.container(border=True):
@@ -135,16 +134,13 @@ def create_app():
                         indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('Home')
                 with nav_box[1]:
                     if st.button('CAV'):
-                        change_page('CAV')
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = None, None, None, None
+                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('CAV')
                 with nav_box[2]:
                     if st.button('PCM'):
-                        change_page('PCM')
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = None, None, None, None
+                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('PCM')
                 with nav_box[3]:
                     if st.button('Driver'):
-                        change_page('Driver')
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = None, None, None, None
+                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('Driver')
 
         # Clear content for previous pages
         with content_placeholder.container():

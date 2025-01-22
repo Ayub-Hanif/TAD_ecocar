@@ -23,9 +23,9 @@ def connect_socket(s: socket):
     s.setblocking(0)
 
 def get_tad_data(s: socket):
-    data, addr = s.recvfrom(PACKET_SIZE)
-    values = struct.unpack('<BBBBBdBdddBBBBBdBBBBd', data)
-                            #012345678901234567891
+    data, addr = s.recvfrom(PACKET_SIZE)       #21
+    values = struct.unpack('<BBBBBdBdddBBBBBdBBBBdBBBBBBBBBBBdddBBBBd', data)
+                            #012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
 
     tad_data["PSS"]         = values[0] #in 1
     tad_data["HVSS"]        = values[1] #in 2
@@ -50,6 +50,26 @@ def get_tad_data(s: socket):
     tad_data["TACstat"]          = values[18] #in 19
     tad_data["MCUcurrmode"]          = values[19] #in 20
     tad_data["MCUtorque"]          = values[20] #in 21
+    tad_data["MILReq"]          = values[21] #in 22
+    tad_data["MILARC"]          = values[22] #in 23
+    tad_data["FCM"]          = values[23] #in 24
+    tad_data["LRR"]          = values[24] #in 25
+    tad_data["SRR_FR"]          = values[25] #in 26
+    tad_data["SRR_LF"]          = values[26] #in 27
+    tad_data["CAV_EBCM"]          = values[27] #in 28
+    tad_data["CAV_EPS"]          = values[28] #in 29
+    tad_data["CAV_PSC"]          = values[29] #in 30
+    tad_data["CAV_Cohda"]          = values[30] #in 31
+    tad_data["CSC_ADAS"]          = values[31] #in 32
+    tad_data["C-ACC_Mileage"]          = values[32] #in 33
+    tad_data["C-ACC_System"]          = values[33] #in 34
+    tad_data["Lead_Distance"]          = values[34] #in 35
+    tad_data["Lead_count"]          = values[35] #in 36
+    tad_data["UDP_data"]          = values[36] #in 37
+    tad_data["Dyno_Mode"]          = values[37] #in 38
+    tad_data["Object_Injection"]          = values[38] #in 39
+    tad_data["Lead_Headway"]          = values[39] #in 40
+
 
 
 def send_tad_data(s: socket):

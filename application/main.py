@@ -57,7 +57,7 @@ def run_with_real_data():
                 print("No data received")
                 continue
 
-            time.sleep(0.1)  # Polling interval
+            time.sleep(0.15)  # Polling interval
 
 # Function for Streamlit-only operation
 def run_streamlit_only():
@@ -72,17 +72,18 @@ def run_streamlit_only():
             "CAVLongCS": 0,
             "CAVLatCS": 1, #no TAD Visualization
             "CAVV2XS": 2, #no TAD Visualization
-            "InstPF": 3.141, 
+            "InstPF": 1.14112321312, 
             "WheelPF": 1,
-            "RESSBattSOC": 75.0,
+            "RESSBattSOC": 2.0,
             "RESSBattAvgCellTemp": 32.5,
             "EDUDriveTemp": 42.1,
-            "DrvMode": 1,
+            "DrvMode": 2,
             "APIndStat": 2,
             "TrafficLightState": 1,
             "IntersectAct": 2,
             "DMSCtrlSw": 3,
-            "BusVoltage": 325.2
+            "BusVoltage": 325.2,
+            "C-ACC_Mileage" : 32.3
         })
 
         # Simulate switch data
@@ -91,7 +92,7 @@ def run_streamlit_only():
         
         # Update Streamlit display with new data
         streamlit_app.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
-        time.sleep(0.1)  # Polling interval
+        time.sleep(0.2)  # Polling interval
 
 #----------------------------------------------
 
