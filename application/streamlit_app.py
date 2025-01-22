@@ -1,7 +1,6 @@
 import os
 import streamlit as st
 from data.tad_data import *
-from streamlit_js_eval import streamlit_js_eval
 
 
 # Get the directory of the current script
@@ -16,13 +15,22 @@ car_warning = os.path.join(current_dir, '..', 'assets', 'car_warning.png')
 warning     = os.path.join(current_dir, '..', 'assets', 'warning.png')
 #----------------------------------------------
 
+# Helper function to check if data has changed
+def has_data_changed():
+    if "tad_data_last" not in st.session_state:
+        st.session_state["tad_data_last"] = tad_data.copy()
+        return True
+    if st.session_state["tad_data_last"] != tad_data:
+        st.session_state["tad_data_last"] = tad_data.copy()
+        return True
+    return False
+
+#----------------------------------------------
 # Indicator helper function
 def enum_to_path(i):
     if i == 2: return yellow_ind
     if i == 1: return green_ind
     else: return gray_ind
-#----------------------------------------------
-
 #----------------------------------------------
 
 ind1, ind2, ind3, ind4, ind5 = None, None, None, None, None
@@ -35,6 +43,17 @@ def create_app():
     
     st.set_page_config(layout="wide", page_title="CACC Dashboard")
 
+    if 'tad_data_last' not in st.session_state:
+        st.session_state['tad_data_last'] = tad_data.copy()
+
+        # Define a function to check for data updates
+    def has_data_changed():
+        return st.session_state["tad_data_last"] != tad_data
+    
+        # Polling mechanism to update UI when data changes
+    if has_data_changed():
+        st.session_state["tad_data_last"] = tad_data.copy()
+        st.rerun()
 
     # Initialize session state for current page if not set
     if 'current_page' not in st.session_state:
@@ -102,7 +121,7 @@ def create_app():
                 with col1: 
                     st.write("AUTOPARK:")
                 with col2.container(border=True):
-                    st.write("READY")
+                    st.write(map_APIndStat[tad_data["APIndStat"]])
 
         with right_column:
             # Placeholder for content that will be dynamically cleared on page change
@@ -147,6 +166,11 @@ def create_app():
 #----------------------------------------------
 
 def update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics):
+
+    # Only rerun the app if data has changed
+    if has_data_changed():
+        st.rerun()
+
     if indicators:
         indicators["ind1"].image(enum_to_path(tad_data["PSS"]), "Propulsion System Status", width=92)
         indicators["ind2"].image(enum_to_path(tad_data["HVSS"]), "HV System Status", width=92)
