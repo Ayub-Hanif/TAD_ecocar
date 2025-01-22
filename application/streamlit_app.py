@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 from data.tad_data import *
+from streamlit_js_eval import streamlit_js_eval
 
 
 # Get the directory of the current script
@@ -11,6 +12,8 @@ style_sheet = os.path.join(current_dir, '..', 'assets', 'style.css')
 yellow_ind  = os.path.join(current_dir, '..', 'assets', 'yellow_ind.png')
 green_ind   = os.path.join(current_dir, '..', 'assets', 'green_ind.png')
 gray_ind    = os.path.join(current_dir, '..', 'assets', 'gray_ind.png')
+car_warning = os.path.join(current_dir, '..', 'assets', 'car_warning.png')
+warning     = os.path.join(current_dir, '..', 'assets', 'warning.png')
 #----------------------------------------------
 
 # Indicator helper function
@@ -18,6 +21,8 @@ def enum_to_path(i):
     if i == 2: return yellow_ind
     if i == 1: return green_ind
     else: return gray_ind
+#----------------------------------------------
+
 #----------------------------------------------
 
 ind1, ind2, ind3, ind4, ind5 = None, None, None, None, None
@@ -46,10 +51,10 @@ def create_app():
         with st.container(border=True):
             col1, col2, col3, col4 = st.columns(spec= 4, border=False, gap="small", vertical_alignment="center")
             with col1:
-                #st.image("car_warning.png")
+                st.image(car_warning)
                 pass
             with col2:
-                #st.image("warning.png")
+                st.image(warning)
                 pass
             with col3.container(border=True):
                 st.write("HANDS ON WHEEL")
