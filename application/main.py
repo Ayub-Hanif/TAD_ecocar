@@ -57,13 +57,14 @@ def run_with_real_data():
                 print("No data received")
                 continue
 
-            time.sleep(0.15)  # Polling interval
+            time.sleep(0.001)  # Polling interval
 
 # Function for Streamlit-only operation
 def run_streamlit_only():
+
     indicators, pcm_metrics, cav_metrics, ape_metrics = streamlit_app.create_app()
     global tad_data
-    
+
     # Simulate data update loop
     while True:
         tad_data.update({
@@ -78,12 +79,12 @@ def run_streamlit_only():
             "RESSBattAvgCellTemp": 32.5,
             "EDUDriveTemp": 42.1,
             "DrvMode": 2,
-            "APIndStat": 2,
+            "APIndStat": 4,
             "TrafficLightState": 1,
             "IntersectAct": 2,
             "DMSCtrlSw": 3,
-            "BusVoltage": 325.2,
-            "C-ACC_Mileage" : 32.3
+            "BusVoltage": 0.0,
+            "C-ACC_Mileage" : 333.2
         })
 
         # Simulate switch data
@@ -92,7 +93,9 @@ def run_streamlit_only():
         
         # Update Streamlit display with new data
         streamlit_app.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
-        time.sleep(0.2)  # Polling interval
+        
+        time.sleep(0.00000001)  # Polling interval
+        
 
 #----------------------------------------------
 

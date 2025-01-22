@@ -39,7 +39,7 @@ def display_main_content():
         "cav4": d4.metric("DMCSCtrlSw", map_DMSCtrlSw[0]),
     }
 
-    st.header("Automatic Parking Engagement")
+    st.subheader("Automatic Parking Engagement")
     c4 = st.container()
     e1, e2, e3, e4 = c4.columns(4)
     ape_metrics = {

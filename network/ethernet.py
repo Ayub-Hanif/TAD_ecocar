@@ -25,7 +25,7 @@ def connect_socket(s: socket):
 def get_tad_data(s: socket):
     data, addr = s.recvfrom(PACKET_SIZE)       #21
     values = struct.unpack('<BBBBBdBdddBBBBBdBBBBdBBBBBBBBBBBdddBBBBd', data)
-                            #012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                            #0123456789012345678901234567890123456789
 
     tad_data["PSS"]         = values[0] #in 1
     tad_data["HVSS"]        = values[1] #in 2
