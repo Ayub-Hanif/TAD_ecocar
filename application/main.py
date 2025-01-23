@@ -62,29 +62,31 @@ def run_with_real_data():
 # Function for Streamlit-only operation
 def run_streamlit_only():
 
-    indicators, pcm_metrics, cav_metrics, ape_metrics = streamlit_app.create_app()
+    streamlit_app.create_app()
     global tad_data
 
     # Simulate data update loop
     while True:
         tad_data.update({
-            "PSS": 1,
+            "PSS": 12,
             "HVSS": 2,
             "CAVLongCS": 0,
             "CAVLatCS": 1, #no TAD Visualization
             "CAVV2XS": 2, #no TAD Visualization
             "InstPF": 1.14112321312, 
             "WheelPF": 1,
-            "RESSBattSOC": 2.0,
-            "RESSBattAvgCellTemp": 32.5,
-            "EDUDriveTemp": 42.1,
-            "DrvMode": 2,
-            "APIndStat": 4,
-            "TrafficLightState": 1,
+            "RESSBattSOC": 2.00,
+            "RESSBattAvgCellTemp": 32.50,
+            "EDUDriveTemp": 42,
+            "DrvMode": 1,
+            "APIndStat": 3,
+            "TrafficLightState": 3,
             "IntersectAct": 2,
-            "DMSCtrlSw": 3,
-            "BusVoltage": 0.0,
-            "C-ACC_Mileage" : 333.2
+            "DMSCtrlSw": 1,
+            "BusVoltage": 1.0,
+            "C-ACC_Mileage" : 1.2,
+            "Lead_Distance" : 30.0,
+            "Lead_Headway" : 3.0
         })
 
         # Simulate switch data
@@ -92,9 +94,9 @@ def run_streamlit_only():
         updateSwitchData(switch_data)
         
         # Update Streamlit display with new data
-        streamlit_app.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
+        streamlit_app.update_app()
         
-        time.sleep(0.00000001)  # Polling interval
+        time.sleep(0.1)  # Polling interval
         
 
 #----------------------------------------------

@@ -24,7 +24,6 @@ def has_data_changed():
         st.session_state["tad_data_last"] = tad_data.copy()
         return True
     return False
-
 #----------------------------------------------
 # Indicator helper function
 def enum_to_path(i):
@@ -38,6 +37,7 @@ pcm1, pcm2, pcm3, pcm4, pcm5, pcm6 = None, None, None, None, None, None
 cav1, cav2, cav3, cav4 = None, None, None, None
 
 #----------------------------------------------
+
 
 def create_app():
     
@@ -65,7 +65,7 @@ def create_app():
         st.session_state['content_placeholder'] = st.empty()  # Reset the content container
         st.rerun()
 
-    with st.container(border=True):
+    with st.container():
 
         with st.container(border=True):
             col1, col2, col3, col4 = st.columns(spec= 4, border=False, gap="small", vertical_alignment="center")
@@ -83,40 +83,39 @@ def create_app():
 
 
         # Create a layout with a fixed sidebar on the left and main content area on the right
-        left_column, right_column = st.columns([1, 3], vertical_alignment ="center" ,gap="medium")
+        left_column, right_column = st.columns([1, 3] ,gap="medium")
 
         # Left Column - Acting as a Fixed Sidebar
         with left_column:
             with st.container(border=True):
-                st.write("CACC")
+                st.write("CACC MILEAGE")
                 with st.container(border=True):
-                    st.metric("MILEAGE", tad_data["C-ACC_Mileage"])
+                    st.write(tad_data["C-ACC_Mileage"])
 
             
-            with st.container(border=True):
-                st.write("LCC")
-                st.write("STATUS")
-                with st.container(border=True):
-                    st.write("STANDBY")
+            #with st.container(border=True):
+            #    st.write("LCC STATUS")
+            #    with st.container(border=True):
+            #        st.write(tad_data["LCCStatus"])
 
             with st.container(border=True):
                 st.write("LEAD CAR DISTANCE")
-                
+            
                 #we have to change the values into the actual values after!!
-                col1, col2 = st.columns(2, border=True)
+                col1, col2 = st.columns([1.5,1], border=True, vertical_alignment="center")
                 with col1:
-                    st.write("300")
+                    st.write(tad_data["Lead_Distance"], "m")
 
                 with col2:
-                    st.write("100")
+                    st.write(tad_data["Lead_Headway"], "s")
             
-            with st.container(border=True):
-                st.write("AIN")
+            #with st.container(border=True):
+            #    st.write("AIN")
 
             with st.container(border=True):
-                st.write("NEXT RIGHT:", "RED")
+                st.write("NEXT RIGHT:", map_TrafficLightState[tad_data["TrafficLightState"]])
                 
-                col1, col2 = st.columns(2, border=False)
+                col1, col2 = st.columns([1.7,2], border=False, vertical_alignment="center")
                 with col1: 
                     st.write("AUTOPARK:")
                 with col2.container(border=True):
@@ -128,67 +127,64 @@ def create_app():
 
             # Navigation bar at the bottom
             with st.container(border=True):
-                nav_box = st.columns(4, gap="large")
+                nav_box = st.columns(4, gap="large", vertical_alignment="bottom")
                 with nav_box[0]:
                     if st.button('Home'):
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('Home')
+                        change_page('Home')
                 with nav_box[1]:
                     if st.button('CAV'):
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('CAV')
+                        change_page('CAV')
                 with nav_box[2]:
                     if st.button('PCM'):
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('PCM')
+                        change_page('PCM')
                 with nav_box[3]:
                     if st.button('Driver'):
-                        indicators, pcm_metrics, cav_metrics, ape_metrics = change_page('Driver')
+                        change_page('Driver')
 
         # Clear content for previous pages
         with content_placeholder.container():
             # Display page content based on the selected page
             if st.session_state['current_page'] == 'Home':
                 from navigation.home_page import display_main_content
-                indicators, pcm_metrics, cav_metrics, ape_metrics = display_main_content()
+                display_main_content()
             elif st.session_state['current_page'] == 'CAV':
                 from navigation.cav_page import display_cav_data
-                indicators, pcm_metrics, cav_metrics, ape_metrics = display_cav_data()
+                display_cav_data()
             elif st.session_state['current_page'] == 'PCM':
                 from navigation.pcm_page import display_pcm_data
-                indicators, pcm_metrics, cav_metrics, ape_metrics = display_pcm_data()
+                display_pcm_data()
             elif st.session_state['current_page'] == 'Driver':
                 from navigation.driver_page import display_driver_page
-                indicators, pcm_metrics, cav_metrics, ape_metrics = display_driver_page()
-    return indicators, pcm_metrics, cav_metrics, ape_metrics
+                display_driver_page()
 
 #----------------------------------------------
 
-def update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics):
+def update_app():
 
-    # Only rerun the app if data has changed
-    if has_data_changed():
+    if st.session_state["tad_data_last"] != tad_data:
+        st.session_state["tad_data_last"] = tad_data.copy()
         st.rerun()
 
-    if indicators:
-        indicators["ind1"].image(enum_to_path(tad_data["PSS"]), "Propulsion System Status", width=92)
-        indicators["ind2"].image(enum_to_path(tad_data["HVSS"]), "HV System Status", width=92)
-        indicators["ind3"].image(enum_to_path(tad_data["CAVLongCS"]), "CAV Long. Cntrl. Status", width=92)
-        indicators["ind4"].image(enum_to_path(tad_data["CAVLatCS"]), "CAV Lat. Cntrl. Status", width=92)
-        indicators["ind5"].image(enum_to_path(tad_data["CAVV2XS"]), "CAV V2X Status", width=92)
+   # if indicators:
+   #     indicators["ind1"].image(enum_to_path(tad_data["PSS"]), "Propulsion sys", width=55)
+   #     indicators["ind2"].image(enum_to_path(tad_data["HVSS"]), "HV Sys", width=55)
+   #     indicators["ind3"].image(enum_to_path(tad_data["CAVLongCS"]), "Long. Cntrl", width=55)
+   #     indicators["ind4"].image(enum_to_path(tad_data["CAVLatCS"]), "Lat. Ctrl", width=55)
+   #     indicators["ind5"].image(enum_to_path(tad_data["CAVV2XS"]), "V2X", width=55)
+#
+   # if pcm_metrics:
+   #     pcm_metrics["pcm1"].metric("Inst. Power Flow", '%.3f' % (tad_data["InstPF"]))
+   #     pcm_metrics["pcm2"].metric("Wheel Power Flow", map_WheelPF(tad_data["WheelPF"]))
+   #     pcm_metrics["pcm3"].metric("HV Battery SOC", '%.3f' % (tad_data["RESSBattSOC"]))
+   #     pcm_metrics["pcm4"].metric("HV Battery Avg. Cell Temp.", '%.3f' % (tad_data["RESSBattAvgCellTemp"]))
+   #     pcm_metrics["pcm5"].metric("Motor Temp.", '%.3f' % (tad_data["EDUDriveTemp"]))
+   #     pcm_metrics["pcm6"].metric("Drive Mode", map_DrvMode[tad_data["DrvMode"]])
+   #             #idk if its a cav or pcm metric??????
+   #     pcm_metrics["pcm7"].metric("Bus Voltage", '%.3f' % (tad_data["BusVoltage"]))
+#
+   # if cav_metrics:
+   #     cav_metrics["cav1"].metric("APIndStat", map_APIndStat[tad_data["APIndStat"]])
+   #     cav_metrics["cav2"].metric("TrafficLightState", map_TrafficLightState[tad_data["TrafficLightState"]])
+   #     cav_metrics["cav3"].metric("IntersectAct", map_IntersectAct[tad_data["IntersectAct"]])
+   #     cav_metrics["cav4"].metric("DMCSCtrlSw", map_DMSCtrlSw[tad_data["DMSCtrlSw"]])
 
-    if pcm_metrics:
-        pcm_metrics["pcm1"].metric("Inst. Power Flow", '%.3f' % (tad_data["InstPF"]))
-        pcm_metrics["pcm2"].metric("Wheel Power Flow", map_WheelPF(tad_data["WheelPF"]))
-        pcm_metrics["pcm3"].metric("HV Battery SOC", '%.3f' % (tad_data["RESSBattSOC"]))
-        pcm_metrics["pcm4"].metric("HV Battery Avg. Cell Temp.", '%.3f' % (tad_data["RESSBattAvgCellTemp"]))
-        pcm_metrics["pcm5"].metric("Motor Temp.", '%.3f' % (tad_data["EDUDriveTemp"]))
-        pcm_metrics["pcm6"].metric("Drive Mode", map_DrvMode[tad_data["DrvMode"]])
-                #idk if its a cav or pcm metric??????
-        pcm_metrics["pcm7"].metric("Bus Voltage", '%.3f' % (tad_data["BusVoltage"]))
-
-    if cav_metrics:
-        cav_metrics["cav1"].metric("APIndStat", map_APIndStat[tad_data["APIndStat"]])
-        cav_metrics["cav2"].metric("TrafficLightState", map_TrafficLightState[tad_data["TrafficLightState"]])
-        cav_metrics["cav3"].metric("IntersectAct", map_IntersectAct[tad_data["IntersectAct"]])
-        cav_metrics["cav4"].metric("DMCSCtrlSw", map_DMSCtrlSw[tad_data["DMSCtrlSw"]])
-
-
-    return indicators, pcm_metrics, cav_metrics

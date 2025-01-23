@@ -11,9 +11,9 @@ tad_data = {
     "CAVV2XS":              0,
     "InstPF":               0.0,
     "WheelPF":              0,
-    "RESSBattSOC":          0.0,
-    "RESSBattAvgCellTemp":  0.0,
-    "EDUDriveTemp":         0.0,
+    "RESSBattSOC":          0.00,
+    "RESSBattAvgCellTemp":  0.00,
+    "EDUDriveTemp":         0.00,
     "DrvMode":              0,
     "APIndStat":            0,
     "TrafficLightState":    0,
@@ -82,14 +82,14 @@ map_APIndStat = defaultdict(lambda : "Error")
 map_APIndStat[0] = "Searching"
 map_APIndStat[1] = "Error"
 map_APIndStat[2] = "Ready"
-map_APIndStat[3] = "In-Progress"
+map_APIndStat[3] = "Progress"
 map_APIndStat[4] = "Complete"
 
 map_TrafficLightState = defaultdict(lambda : "Error")
 map_TrafficLightState[0] = "None Detected"
-map_TrafficLightState[1] = "Red Next"
-map_TrafficLightState[2] = "Yellow Next"
-map_TrafficLightState[3] = "Green Next"
+map_TrafficLightState[1] = "Red"
+map_TrafficLightState[2] = "Yellow"
+map_TrafficLightState[3] = "Green"
 
 map_IntersectAct = defaultdict(lambda : "Error")
 map_IntersectAct[0] = "Straight"

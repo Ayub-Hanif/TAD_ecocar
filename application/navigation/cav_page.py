@@ -1,10 +1,36 @@
+from data.tad_data import *
 import streamlit as st
-
+from streamlit_app import enum_to_path
 def display_cav_data():
-    st.title("CAV Data")
-    st.write("This is the CAV data page. Explore the CAV metrics and actions.")
 
-    st.subheader("Current Metrics")
+    button_style = """ <style>.green-button
+                    {
+                    background-color: #4CAF50; /* Green color */
+                    color: white; padding: 10px 20px;
+                    border: none;
+                    cursor: pointer;
+                    }
+                    .green-button:hover {
+                    background-color: #45a049; /* Darker green on hover */
+                    }
+                    </style>"""
+    st.markdown(button_style, unsafe_allow_html=True) 
+
+    c1,c2,c3 = st.columns([2,0.5,2])
+
+    with c1.container(border=True):
+        st.write("CAV DYNO Mode")
+        if st.toggle("Power On"):
+            tad_data["Cav_Dyno"] = 1
+        else:
+            tad_data["Cav_Dyno"] = 0
+    
+    with c2.container(border=True):
+        st.write("CACC")
+        st.image(enum_to_path(2), width=55)
+
+    
+
     col1, col2 = st.columns(2)
     with col1:
         st.metric(label="Speed", value="45 km/h", delta="+2 km/h")
@@ -16,13 +42,3 @@ def display_cav_data():
         st.metric(label="Battery Level", value="85%")
     with col4:
         st.metric(label="Signal Strength", value="Good")
-
-    st.subheader("Actions")
-    if st.button("Start CAV System"):
-        st.success("CAV System started!")
-    if st.button("Stop CAV System"):
-        st.warning("CAV System stopped!")
-    if st.button("Restart CAV System"):
-        st.info("CAV System restarted!")
-    
-    return None, None, None, None
