@@ -80,7 +80,7 @@ def run_streamlit_only():
             "EDUDriveTemp": 42,
             "DrvMode": 1,
             "APIndStat": 3,
-            "TrafficLightState": 3,
+            "TrafficLightState": 1,
             "IntersectAct": 2,
             "DMSCtrlSw": 1,
             "BusVoltage": 1.0,
