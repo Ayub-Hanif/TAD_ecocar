@@ -70,10 +70,27 @@ def create_app():
         with st.container(border=True):
             col1, col2, col3, col4 = st.columns(spec= 4, border=False, gap="small", vertical_alignment="center")
             with col1:
-                st.image(car_warning)
+                #need to add it back after the date for the demo is passed.
+                #st.image(car_warning)
+
+                if tad_data["Object_Injection"] == 1:
+                    st.image(green_ind, "Obj Inject", width=50)
+                pass
+                
+                if tad_data["Object_Injection"] == 0:
+                    st.image(yellow_ind,"Obj Inject", width=50)
                 pass
             with col2:
-                st.image(warning)
+
+                #same as the car_warning.
+                #st.image(warning)
+
+                if tad_data["Dyno_Mode"]==1:
+                    st.image(green_ind, "Dyno Mode", width=50)
+                pass
+
+                if tad_data["Dyno_Mode"]==0:
+                    st.image(yellow_ind, "Dyno Mode", width=50)
                 pass
             with col3.container(border=True):
                 st.write("HANDS ON WHEEL")

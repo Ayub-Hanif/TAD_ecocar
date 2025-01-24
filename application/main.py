@@ -86,7 +86,9 @@ def run_streamlit_only():
             "BusVoltage": 1.0,
             "C-ACC_Mileage" : 1.2,
             "Lead_Distance" : 30.0,
-            "Lead_Headway" : 3.0
+            "Lead_Headway" : 3.0,
+            "Object_Injection": 1,
+            "Dyno_Mode": 0
         })
 
         # Simulate switch data
