@@ -31,7 +31,7 @@ def main():
 
 
 def run_with_real_data():
-    indicators, pcm_metrics, cav_metrics, ape_metrics = streamlit_app.create_app()
+    streamlit_app.create_app()
     # Network socket setup
     with ethernet.start_socket() as s:
         try:
@@ -49,7 +49,7 @@ def run_with_real_data():
                 updateSwitchData(gpio.getSwitchData())
 
                 # Update UI with new data
-                streamlit_app.update_app(tad_data, indicators, pcm_metrics, cav_metrics, ape_metrics)
+                streamlit_app.update_app()
                 
                 # Send data back to network
                 ethernet.send_tad_data(s)
