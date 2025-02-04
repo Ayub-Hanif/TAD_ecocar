@@ -57,7 +57,7 @@ def run_with_real_data():
                 print("No data received")
                 continue
 
-            time.sleep(0.001)  # Polling interval
+            time.sleep(0.1)  # Polling interval
 
 # Function for Streamlit-only operation
 def run_streamlit_only():
