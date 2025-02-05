@@ -24,6 +24,7 @@ def has_data_changed():
         st.session_state["tad_data_last"] = tad_data.copy()
         return True
     return False
+
 #----------------------------------------------
 # Indicator helper function
 def enum_to_path(i):
@@ -45,15 +46,6 @@ def create_app():
 
     if 'tad_data_last' not in st.session_state:
         st.session_state['tad_data_last'] = tad_data.copy()
-
-        # Define a function to check for data updates
-    def has_data_changed():
-        return st.session_state["tad_data_last"] != tad_data
-    
-        # Polling mechanism to update UI when data changes
-    if has_data_changed():
-        st.session_state["tad_data_last"] = tad_data.copy()
-        st.rerun()
 
     # Initialize session state for current page if not set
     if 'current_page' not in st.session_state:

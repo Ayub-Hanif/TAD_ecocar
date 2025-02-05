@@ -2,6 +2,8 @@ import sys
 import os
 import time
 import streamlit as st
+import random
+
 
 
 # Add the parent directory to sys.path
@@ -62,6 +64,9 @@ def run_with_real_data():
 # Function for Streamlit-only operation
 def run_streamlit_only():
 
+    number_C_ACC = random.randint(1, 100)
+    Lead_Distance = random.randint(1, 10)
+    Lead_Headway = random.randint(1, 20)
     streamlit_app.create_app()
     global tad_data
 
@@ -73,7 +78,7 @@ def run_streamlit_only():
             "CAVLongCS": 0,
             "CAVLatCS": 1, #no TAD Visualization
             "CAVV2XS": 2, #no TAD Visualization
-            "InstPF": 1.14112321312, 
+            "InstPF": number_C_ACC, 
             "WheelPF": 1,
             "RESSBattSOC": 2.00,
             "RESSBattAvgCellTemp": 32.50,
@@ -84,12 +89,13 @@ def run_streamlit_only():
             "IntersectAct": 2,
             "DMSCtrlSw": 1,
             "BusVoltage": 1.0,
-            "C-ACC_Mileage" : 1.2,
-            "Lead_Distance" : 30.0,
-            "Lead_Headway" : 3.0,
+            "C-ACC_Mileage" : number_C_ACC,
+            "Lead_Distance" : Lead_Distance,
+            "Lead_Headway" : Lead_Headway,
             "Object_Injection": 1,
             "Dyno_Mode": 0
         })
+        time.sleep(0.1)
 
         # Simulate switch data
         switch_data = [True, False, True, False]  # Simulated switch states
