@@ -26,11 +26,11 @@ def display_pcm_data():
     """, unsafe_allow_html=True)
 
     a1, a2, a3, a4, a5 = st.columns(5)
-    a1.image(enum_to_path(1), "Propulsion sys", width=55),
-    a2.image(enum_to_path(2), "HV Sys", width=55),
-    a3.image(enum_to_path(0), "Long. Cntrl", width=55),
-    a4.image(enum_to_path(1), "Lat. Ctrl", width=55),
-    a5.image(enum_to_path(2), "V2X", width=55)
+    a1.image(tad_data["PSS"], "Propulsion sys", width=55),
+    a2.image(tad_data["HVSS"], "HV Sys", width=55),
+    a3.image(tad_data["CAVLongCS"], "Long. Cntrl", width=55),
+    a4.image(tad_data["CAVLatCS"], "Lat. Ctrl", width=55),
+    a5.image(tad_data["CAVV2XS"], "V2X", width=55)
 
 
     left_side,right_side= st.columns(2)
@@ -40,7 +40,7 @@ def display_pcm_data():
             st.markdown(f"""
                 <div class="custom-metric-container">
                     <div class="custom-metric-label">Inst. Power Flow</div>
-                    <div class="custom-metric-value">{tad_data["PSS"]}</div>
+                    <div class="custom-metric-value">{tad_data["InstPF"]}</div>
                 </div>
             """, unsafe_allow_html=True)
 
