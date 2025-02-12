@@ -19,6 +19,7 @@ def enum_to_path(i):
     else: return gray_ind
 
 def create_app():
+
         # Define custom CSS for metric styling
     st.markdown("""
         <style>
@@ -213,6 +214,8 @@ def create_app():
             elif st.session_state['current_page'] == 'Driver':
                 from navigation.driver_page import display_driver_page
                 display_driver_page()
+    
+
 
 def update_app():
     print("Simulated data updated in streamlit_app line: 218")

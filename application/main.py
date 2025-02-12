@@ -4,8 +4,63 @@ import time
 import streamlit as st
 import random
 from streamlit_autorefresh  import st_autorefresh
+import streamlit.components.v1 as components
+
 
 st.set_page_config(layout="wide", page_title="CACC Dashboard")
+st.markdown(
+    """
+    <style>
+    /* Override the gap for the classes in question */
+    .st-emotion-cache-cdgltb {
+        gap: 0rem !important;
+    }
+    .st-emotion-cache-12h60ca {
+        gap: 0rem !important;
+    }
+    .st-emotion-cache-1b1b1b1 {
+        gap: 0rem !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <style>
+    /* Remove padding and allow full width for the main container */
+    .block-container {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+        max-width: 100%;
+        width: 100%;
+    }
+    /* Optionally, hide the header if you want to reclaim even more space */
+    header { 
+        display: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <style>
+    /* Hide the scrollbar for Chrome, Safari and Opera */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, .main, .block-container {
+        overflow: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.set_option('client.toolbarMode', 'minimal')
 
 # Add the parent directory to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
