@@ -57,10 +57,11 @@ tad_data = {
     "LongCtrl":     0,
     "LatCtrl":      0,
     "V2X":          0,
-    "APActivate":   0,
-    "APStart":      0,
-    "APCancel":     0,
-    "APFinish":     0
+    "AutoP_Activate":   0,
+    "AutoP_Start":      0,
+    "AutoP_Cancel":     0,
+    "AutoP_Finish":     0,
+    "Cav_Dyno": 0,
 }
 
 def map_WheelPF(packed):

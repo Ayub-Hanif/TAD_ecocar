@@ -47,7 +47,7 @@ def display_pcm_data():
             st.markdown(f"""
                 <div class="custom-metric-container">
                     <div class="custom-metric-label">HV Battery SOC (%)</div>
-                    <div class="custom-metric-value">{tad_data["RESSBattSOC"]}%</div>
+                    <div class="custom-metric-value">{tad_data["RESSBattSOC"]:.0f}%</div>
                 </div>
             """, unsafe_allow_html=True)
 

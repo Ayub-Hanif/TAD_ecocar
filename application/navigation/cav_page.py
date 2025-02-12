@@ -21,9 +21,7 @@ def display_cav_data():
     with c1.container(border=True):
         st.write("CAV DYNO Mode")
         if st.toggle("Power On"):
-            tad_data["Cav_Dyno"] = 1
-        else:
-            tad_data["Cav_Dyno"] = 0
+            updateButtonData("Cav_Dyno")
     
     with c2.container(border=True):
         st.write("CACC")

@@ -111,11 +111,11 @@ def create_app():
                          alt="Dyno Mode" width="50" />
                   </div>
                 
-                  <!-- 3) Hands on Wheel -->
+                  <!-- 2) UDP_data -->
                   <div class="metric-item">
-                    <div class="metric-item-label">HANDS ON WHEEL</div>
-                    <!-- If you eventually want an image, you can place it below; 
-                         or for text only, just leave it as is. -->
+                    <div class="metric-item-label">DYNO MODE</div>
+                    <img src="data:image/png;base64,{file_to_base64(enum_to_path(tad_data["UDP_data"]))}" 
+                         alt="UDP_data" width="50" />
                   </div>
                 
                   <!-- 4) Eyes on Road -->
