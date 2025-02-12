@@ -1,142 +1,190 @@
 import os
 import streamlit as st
-from data.tad_data import *
+import base64
+from data.tad_data import tad_data, map_TrafficLightState, map_APIndStat
+# ... other imports as needed ...
 
-
-# Get the directory of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Paths to resource directories
 style_sheet = os.path.join(current_dir, '..', 'assets', 'style.css')
 yellow_ind  = os.path.join(current_dir, '..', 'assets', 'yellow_ind.png')
 green_ind   = os.path.join(current_dir, '..', 'assets', 'green_ind.png')
 gray_ind    = os.path.join(current_dir, '..', 'assets', 'gray_ind.png')
 car_warning = os.path.join(current_dir, '..', 'assets', 'car_warning.png')
 warning     = os.path.join(current_dir, '..', 'assets', 'warning.png')
-#----------------------------------------------
 
-# Helper function to check if data has changed
-def has_data_changed():
-    if "tad_data_last" not in st.session_state:
-        st.session_state["tad_data_last"] = tad_data.copy()
-        return True
-    if st.session_state["tad_data_last"] != tad_data:
-        st.session_state["tad_data_last"] = tad_data.copy()
-        return True
-    return False
-
-#----------------------------------------------
-# Indicator helper function
 def enum_to_path(i):
     if i == 2: return yellow_ind
     if i == 1: return green_ind
     else: return gray_ind
-#----------------------------------------------
-
-ind1, ind2, ind3, ind4, ind5 = None, None, None, None, None
-pcm1, pcm2, pcm3, pcm4, pcm5, pcm6 = None, None, None, None, None, None
-cav1, cav2, cav3, cav4 = None, None, None, None
-
-#----------------------------------------------
-
 
 def create_app():
-    
-    st.set_page_config(layout="wide", page_title="CACC Dashboard")
+        # Define custom CSS for metric styling
+    st.markdown("""
+        <style>
+        .custom-metric-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .custom-metric-label {
+            font-size: 16px; /* Smaller label font size */
+            color: #ffffff;
+        }
+        .custom-metric-value {
+            font-size: 18px; /* Larger value font size */
+            font-weight: bold;
+            color: #ffffff;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
+    # Keep track of last TAD data in session_state
     if 'tad_data_last' not in st.session_state:
         st.session_state['tad_data_last'] = tad_data.copy()
 
-    # Initialize session state for current page if not set
+    # Keep track of current page in session_state
     if 'current_page' not in st.session_state:
         st.session_state['current_page'] = 'Home'
 
-    # Function to change page
+    # Simple function to switch pages
     def change_page(page_name):
         st.session_state['current_page'] = page_name
-        st.session_state['content_placeholder'] = st.empty()  # Reset the content container
-        st.rerun()
+        # No forced st.rerun() here — a button click triggers re-run anyway.
 
+    st.markdown("""
+        <style>
+        .custom-metric-container_main {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            
+            /* Center horizontally and space out items */
+            display: flex;
+            justify-content: space-around;
+            align-items: top;
+        }
+        
+        /* Each sub-block in the row */
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 20px; /* Optional extra spacing */
+        }
+        
+        .metric-item-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    def file_to_base64(file_path):
+        with open(file_path, "rb") as f:
+            data = f.read()
+        return base64.b64encode(data).decode("utf-8")
+    
+    green_b64 = file_to_base64(green_ind)
+    yellow_b64 = file_to_base64(yellow_ind)
+    
+    # Example top-row container
     with st.container():
-
-        with st.container(border=True):
-            col1, col2, col3, col4 = st.columns(spec= 4, border=False, gap="small", vertical_alignment="center")
-            with col1:
-                #need to add it back after the date for the demo is passed.
-                #st.image(car_warning)
-
-                if tad_data["Object_Injection"] == 1:
-                    st.image(green_ind, "Obj Inject", width=50)
-                pass
+        with st.container():
+            st.markdown(f"""
+                <div class="custom-metric-container_main">
                 
-                if tad_data["Object_Injection"] == 0:
-                    st.image(yellow_ind,"Obj Inject", width=50)
-                pass
-            with col2:
+                  <!-- 1) Object Injection -->
+                  <div class="metric-item">
+                    <div class="metric-item-label">Obj Inject</div>
+                    <img src="data:image/png;base64,{file_to_base64(enum_to_path(tad_data["Object_Injection"]))}" 
+                         alt="Obj Inject" width="50" />
+                  </div>
+                
+                  <!-- 2) Dyno Mode -->
+                  <div class="metric-item">
+                    <div class="metric-item-label">DYNO MODE</div>
+                    <img src="data:image/png;base64,{file_to_base64(enum_to_path(tad_data["Dyno_Mode"]))}" 
+                         alt="Dyno Mode" width="50" />
+                  </div>
+                
+                  <!-- 3) Hands on Wheel -->
+                  <div class="metric-item">
+                    <div class="metric-item-label">HANDS ON WHEEL</div>
+                    <!-- If you eventually want an image, you can place it below; 
+                         or for text only, just leave it as is. -->
+                  </div>
+                
+                  <!-- 4) Eyes on Road -->
+                  <div class="metric-item">
+                    <div class="metric-item-label">EYES ON ROAD</div>
+                  </div>
+                
+                </div>
+            """, unsafe_allow_html=True)
 
-                #same as the car_warning.
-                #st.image(warning)
+        left_column, right_column = st.columns([1, 3], gap="medium")
 
-                if tad_data["Dyno_Mode"]==1:
-                    st.image(green_ind, "Dyno Mode", width=50)
-                pass
-
-                if tad_data["Dyno_Mode"]==0:
-                    st.image(yellow_ind, "Dyno Mode", width=50)
-                pass
-            with col3.container(border=True):
-                st.write("HANDS ON WHEEL")
-
-            with col4.container(border=True):
-                st.write("EYES ON ROAD")
-
-
-        # Create a layout with a fixed sidebar on the left and main content area on the right
-        left_column, right_column = st.columns([1, 3] ,gap="medium")
-
-        # Left Column - Acting as a Fixed Sidebar
         with left_column:
-            with st.container(border=True):
-                st.write("CACC MILEAGE")
-                with st.container(border=True):
-                    st.write(tad_data["C-ACC_Mileage"])
+            st.markdown(f"""
+                <div class="custom-metric-container">
+                    <div class="custom-metric-label">CACC MILEAGE</div>
+                    <div class="custom-metric-value">{tad_data["C-ACC_Mileage"]}</div>
+                </div>
+            """, unsafe_allow_html=True)
 
+            colA, colB = st.columns([1,1])
+            with colA:
+                st.markdown(f"""
+                <div class="custom-metric-container">
+                    <div class="custom-metric-label">Lead_Distance</div>
+                    <div class="custom-metric-value">{tad_data["Lead_Distance"]}</div>
+                </div>
+            """, unsafe_allow_html=True)
+            with colB:
+                st.markdown(f"""
+                <div class="custom-metric-container">
+                    <div class="custom-metric-label">Lead_Headway</div>
+                    <div class="custom-metric-value">{tad_data["Lead_Headway"]}</div>
+                </div>
+            """, unsafe_allow_html=True)
             
-            #with st.container(border=True):
-            #    st.write("LCC STATUS")
-            #    with st.container(border=True):
-            #        st.write(tad_data["LCCStatus"])
+            traffic_light_colors = {
+                "None Detected": "grey",
+                "Red": "red",
+                "Yellow": "Yellow",
+                "Green": "green",
+                "Error": "black"
+            }
 
-            with st.container(border=True):
-                st.write("LEAD CAR DISTANCE")
-            
-                #we have to change the values into the actual values after!!
-                col1, col2 = st.columns([1.5,1], border=True, vertical_alignment="center")
-                with col1:
-                    st.write(tad_data["Lead_Distance"], "m")
+            text_color = traffic_light_colors.get(map_TrafficLightState[tad_data["TrafficLightState"]], "black")  # default to black if not found
+            st.markdown(f"""
+                <div class="custom-metric-container">
+                    <div class="custom-metric-label">NEXT RIGHT:</div>
+                    <!-- inline style sets the text color -->
+                    <div class="custom-metric-value" style="color: {text_color};">
+                        {map_TrafficLightState[tad_data["TrafficLightState"]]}
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
 
-                with col2:
-                    st.write(tad_data["Lead_Headway"], "s")
-            
-            #with st.container(border=True):
-            #    st.write("AIN")
-
-            with st.container(border=True):
-                st.write("NEXT RIGHT:", map_TrafficLightState[tad_data["TrafficLightState"]])
-                
-                col1, col2 = st.columns([1.7,2], border=False, vertical_alignment="center")
-                with col1: 
-                    st.write("AUTOPARK:")
-                with col2.container(border=True):
-                    st.write(map_APIndStat[tad_data["APIndStat"]])
+            st.markdown(f"""
+                <div class="custom-metric-container">
+                    <div class="custom-metric-label">AUTOPARK:</div>
+                    <div class="custom-metric-value">{map_APIndStat[tad_data["APIndStat"]]}</div>
+                </div>
+            """, unsafe_allow_html=True)
 
         with right_column:
-            # Placeholder for content that will be dynamically cleared on page change
+            # We create a placeholder to hold page-specific content
             content_placeholder = st.empty()
 
-            # Navigation bar at the bottom
-            with st.container(border=True):
-                nav_box = st.columns(4, gap="large", vertical_alignment="bottom")
+            # Navigation container at bottom
+            with st.container():
+                nav_box = st.columns(4)
                 with nav_box[0]:
                     if st.button('Home'):
                         change_page('Home')
@@ -149,10 +197,10 @@ def create_app():
                 with nav_box[3]:
                     if st.button('Driver'):
                         change_page('Driver')
+                        
 
-        # Clear content for previous pages
+        # Now display page content
         with content_placeholder.container():
-            # Display page content based on the selected page
             if st.session_state['current_page'] == 'Home':
                 from navigation.home_page import display_main_content
                 display_main_content()
@@ -166,34 +214,7 @@ def create_app():
                 from navigation.driver_page import display_driver_page
                 display_driver_page()
 
-#----------------------------------------------
-
 def update_app():
-
-    if st.session_state["tad_data_last"] != tad_data:
+    print("Simulated data updated in streamlit_app line: 218")
+    if tad_data != st.session_state["tad_data_last"]:
         st.session_state["tad_data_last"] = tad_data.copy()
-        st.rerun()
-
-   # if indicators:
-   #     indicators["ind1"].image(enum_to_path(tad_data["PSS"]), "Propulsion sys", width=55)
-   #     indicators["ind2"].image(enum_to_path(tad_data["HVSS"]), "HV Sys", width=55)
-   #     indicators["ind3"].image(enum_to_path(tad_data["CAVLongCS"]), "Long. Cntrl", width=55)
-   #     indicators["ind4"].image(enum_to_path(tad_data["CAVLatCS"]), "Lat. Ctrl", width=55)
-   #     indicators["ind5"].image(enum_to_path(tad_data["CAVV2XS"]), "V2X", width=55)
-#
-   # if pcm_metrics:
-   #     pcm_metrics["pcm1"].metric("Inst. Power Flow", '%.3f' % (tad_data["InstPF"]))
-   #     pcm_metrics["pcm2"].metric("Wheel Power Flow", map_WheelPF(tad_data["WheelPF"]))
-   #     pcm_metrics["pcm3"].metric("HV Battery SOC", '%.3f' % (tad_data["RESSBattSOC"]))
-   #     pcm_metrics["pcm4"].metric("HV Battery Avg. Cell Temp.", '%.3f' % (tad_data["RESSBattAvgCellTemp"]))
-   #     pcm_metrics["pcm5"].metric("Motor Temp.", '%.3f' % (tad_data["EDUDriveTemp"]))
-   #     pcm_metrics["pcm6"].metric("Drive Mode", map_DrvMode[tad_data["DrvMode"]])
-   #             #idk if its a cav or pcm metric??????
-   #     pcm_metrics["pcm7"].metric("Bus Voltage", '%.3f' % (tad_data["BusVoltage"]))
-#
-   # if cav_metrics:
-   #     cav_metrics["cav1"].metric("APIndStat", map_APIndStat[tad_data["APIndStat"]])
-   #     cav_metrics["cav2"].metric("TrafficLightState", map_TrafficLightState[tad_data["TrafficLightState"]])
-   #     cav_metrics["cav3"].metric("IntersectAct", map_IntersectAct[tad_data["IntersectAct"]])
-   #     cav_metrics["cav4"].metric("DMCSCtrlSw", map_DMSCtrlSw[tad_data["DMSCtrlSw"]])
-

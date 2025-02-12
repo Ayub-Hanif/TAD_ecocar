@@ -3,8 +3,9 @@ import os
 import time
 import streamlit as st
 import random
+from streamlit_autorefresh  import st_autorefresh
 
-
+st.set_page_config(layout="wide", page_title="CACC Dashboard")
 
 # Add the parent directory to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +34,8 @@ def main():
 
 
 def run_with_real_data():
+    # Set up an auto-refresh every 500 ms (0.5 seconds). Adjust as needed.
+    count = st_autorefresh(interval=2000, limit=None, key="sim_auto_refresh")
     streamlit_app.create_app()
     # Network socket setup
     with ethernet.start_socket() as s:
@@ -59,52 +62,62 @@ def run_with_real_data():
                 print("No data received")
                 continue
 
-            time.sleep(0.1)  # Polling interval
+            #time.sleep(0.1)  # Polling interval
 
 # Function for Streamlit-only operation
 def run_streamlit_only():
+    """
+    Replaces the old `while True:` loop with a timed auto-refresh.
+    Each run, we generate new random data to simulate updates.
+    """
 
+    # Set up an auto-refresh every 500 ms (0.5 seconds). Adjust as needed.
+    count = st_autorefresh(interval=2000, limit=None, key="sim_auto_refresh")
+
+    # Generate new random values on each re-run
     number_C_ACC = random.randint(1, 100)
     Lead_Distance = random.randint(1, 10)
     Lead_Headway = random.randint(1, 20)
+
     streamlit_app.create_app()
-    global tad_data
+    # Update global tad_data with simulated values
+    tad_data.update({
+        "PSS": 12,
+        "HVSS": 2,
+        "CAVLongCS": 0,
+        "CAVLatCS": 1, # no TAD Visualization
+        "CAVV2XS": 2,  # no TAD Visualization
+        "InstPF": number_C_ACC,
+        "WheelPF": 1,
+        "RESSBattSOC": 2.00,
+        "RESSBattAvgCellTemp": 32.50,
+        "EDUDriveTemp": 42,
+        "DrvMode": 1,
+        "APIndStat": 3,
+        "TrafficLightState": 1,
+        "IntersectAct": 2,
+        "DMSCtrlSw": 1,
+        "BusVoltage": 1.0,
+        "C-ACC_Mileage": number_C_ACC,
+        "Lead_Distance": Lead_Distance,
+        "Lead_Headway": Lead_Headway,
+        "Object_Injection": 1,
+        "Dyno_Mode": 0
+    })
 
-    # Simulate data update loop
-    while True:
-        tad_data.update({
-            "PSS": 12,
-            "HVSS": 2,
-            "CAVLongCS": 0,
-            "CAVLatCS": 1, #no TAD Visualization
-            "CAVV2XS": 2, #no TAD Visualization
-            "InstPF": number_C_ACC, 
-            "WheelPF": 1,
-            "RESSBattSOC": 2.00,
-            "RESSBattAvgCellTemp": 32.50,
-            "EDUDriveTemp": 42,
-            "DrvMode": 1,
-            "APIndStat": 3,
-            "TrafficLightState": 1,
-            "IntersectAct": 2,
-            "DMSCtrlSw": 1,
-            "BusVoltage": 1.0,
-            "C-ACC_Mileage" : number_C_ACC,
-            "Lead_Distance" : Lead_Distance,
-            "Lead_Headway" : Lead_Headway,
-            "Object_Injection": 1,
-            "Dyno_Mode": 0
-        })
-        time.sleep(0.1)
+    # Simulate switch data
+    switch_data = [True, False, True, False]  # Example states
+    updateSwitchData(switch_data)
+    print("Simulated data updated in main line: 111")
 
-        # Simulate switch data
-        switch_data = [True, False, True, False]  # Simulated switch states
-        updateSwitchData(switch_data)
-        
-        # Update Streamlit display with new data
-        streamlit_app.update_app()
-        
-        time.sleep(0.1)  # Polling interval
+    #time.sleep(0.5)  # Polling interval
+
+    # Create the Streamlit app layout (once per run)
+
+    # Then do partial (in-code) updates, if needed.
+    # But DO NOT do st.rerun() in update_app() (see below).
+    streamlit_app.update_app()
+
         
 
 #----------------------------------------------

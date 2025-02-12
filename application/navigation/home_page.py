@@ -4,12 +4,30 @@ from streamlit_app import enum_to_path
 
 def display_main_content():
 
+    # Define custom CSS for metric styling
+    st.markdown("""
+        <style>
+        .custom-metric-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .custom-metric-label {
+            font-size: 16px; /* Smaller label font size */
+            color: #ffffff;
+        }
+        .custom-metric-value {
+            font-size: 18px; /* Larger value font size */
+            font-weight: bold;
+            color: #ffffff;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 
     c1, c2, c3 = st.columns([3,1.5, 1.5])
-
-    c1.subheader("Next light is:")
-    
-    traffic_light_state  = map_TrafficLightState[tad_data["TrafficLightState"]]
 
 
     color_mapping = {
@@ -20,13 +38,22 @@ def display_main_content():
         "Error": "#808080"        # Gray for fallback
     }
     # Get the color for the current traffic light state
-    text_color = color_mapping.get(traffic_light_state, "#808080")
-    c1.markdown(f"""<style>.big-font
-                 {{font-size:30px !important;
-                    color: {text_color};
-                }}</style>""", unsafe_allow_html=True)
-    c1.markdown(f'<p class="big-font">{traffic_light_state}</p>', unsafe_allow_html=True)
-
+    text_color = color_mapping.get(map_TrafficLightState[tad_data["TrafficLightState"]], "black")
+    c1.markdown(f"""
+        <div class="custom-metric-container">
+            <div class="custom-metric-label">Next light is:</div>
+            <!-- inline style sets the text color -->
+            <div class="custom-metric-value" style="color: {text_color};">
+                {map_TrafficLightState[tad_data["TrafficLightState"]]}
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    #c1.markdown(f"""<style>.big-font
+    #             {{font-size:30px !important;
+    #                color: {text_color};
+    #            }}</style>""", unsafe_allow_html=True)
+    #c1.markdown(f'<p class="big-font">{traffic_light_state}</p>', unsafe_allow_html=True)
+#
     c1.subheader("Distance to next light")
     with c1.container(border=True):
         st.write("Coming soon!!")
